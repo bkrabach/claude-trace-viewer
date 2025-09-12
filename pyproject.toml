@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "claude-trace-viewer"
+version = "0.1.0"
+description = "A simple web-based viewer for Claude trace files"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "Brian Krabach", email = "brkrabac@example.com"},
+]
+dependencies = [
+    "flask>=3.0.0",
+]
+
+[project.scripts]
+claude-trace-viewer = "trace_viewer.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/brkrabac/claude-trace-viewer"
+Repository = "https://github.com/brkrabac/claude-trace-viewer"
+Issues = "https://github.com/brkrabac/claude-trace-viewer/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["trace_viewer"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "trace_viewer/",
+    "README.md",
+    "LICENSE",
+]
+
+[tool.uv]
+dev-dependencies = []
