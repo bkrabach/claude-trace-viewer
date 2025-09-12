@@ -37,20 +37,14 @@ uv add claude-trace-viewer
 ## Usage
 
 ```bash
-# View traces in current directory
+# View traces in current directory (has a `.claude-trace` folder)
 claude-trace-viewer
-# or use the shorter alias
-ctv
 
 # Specify a different directory
-claude-trace-viewer --trace-dir /path/to/traces
-# or
-ctv --trace-dir /path/to/traces
+claude-trace-viewer --trace-dir /path/to/directory/that/contains/.claude-trace
 
 # Use a different port
-claude-trace-viewer --port 8080
-# or
-ctv --port 8080
+claude-trace-viewer --port 5000
 ```
 
 The viewer will automatically open in your default browser at http://localhost:5000
@@ -84,20 +78,6 @@ If the viewer shows no trace files, ensure that:
 - You're pointing to the correct directory (default is `.claude-trace` in the current working directory)
 - Claude has generated trace files during your conversations, go to `.claude-trace` and verify that there are JSON files present
 - You have read permissions for the trace directory
-
-### Server fails to start
-
-If the server fails to start on the default port (5000):
-
-- Another application may be using port 5000
-- Use `--port` to specify a different port: `ctv --port 8080`
-
-### Browser doesn't open automatically
-
-If your browser doesn't open automatically:
-
-- Manually navigate to http://localhost:5000 (or your specified port)
-- Check that you have a default browser configured on your system
 
 ## License
 
