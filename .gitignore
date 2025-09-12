@@ -42,3 +42,6 @@ htmlcov/
 
 # claude-trace logs
 .claude-trace
+
+# Ruff cache
+.ruff_cache

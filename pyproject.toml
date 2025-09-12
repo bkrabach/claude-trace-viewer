@@ -50,5 +50,9 @@ include-package-data = true
 [tool.setuptools.package-data]
 trace_viewer = ["static/**/*", "templates/**/*"]
 
-[tool.uv]
-dev-dependencies = []
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4.2",
+    "ruff>=0.8.0",
+    "build>=1.2.2",
+]

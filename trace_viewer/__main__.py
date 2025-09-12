@@ -15,7 +15,13 @@ def main():
         default=".claude-trace",
         help="Directory containing trace files (default: .claude-trace)",
     )
-    parser.add_argument("-p", "--port", type=int, default=8080, help="Port to run server on (default: 8080)")
+    parser.add_argument(
+        "-p",
+        "--port",
+        type=int,
+        default=8080,
+        help="Port to run server on (default: 8080)",
+    )
     parser.add_argument("--no-browser", action="store_true", help="Don't automatically open browser")
 
     args = parser.parse_args()

@@ -182,7 +182,11 @@ def _process_entry(entry: dict[str, Any], index: int) -> dict[str, Any]:
 
     # Sub-agent info will be added during post-processing if detected
     if "subagent_info" not in result:
-        result["subagent_info"] = {"is_subagent": False, "agent_type": None, "detection_method": None}
+        result["subagent_info"] = {
+            "is_subagent": False,
+            "agent_type": None,
+            "detection_method": None,
+        }
 
     return result
 
