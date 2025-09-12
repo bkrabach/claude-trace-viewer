@@ -1,8 +1,25 @@
 # Releasing claude-trace-viewer
 
-## Quick Release Process
+## Automated Release Process
 
-For each new release, follow these steps:
+Simply run the release script after making your changes:
+
+```bash
+python tools/release.py
+```
+
+The script will:
+1. Check for uncommitted changes
+2. Run tests to ensure everything works
+3. Ask you to choose version bump (major/minor/patch)
+4. Update version in all necessary files
+5. Update CHANGELOG.md with template sections
+6. Create git commit and tag
+7. Push to GitHub (triggering automatic PyPI release)
+
+## Manual Release Process (if needed)
+
+If you prefer to do it manually or the script fails:
 
 ### 1. Update Version
 
@@ -36,24 +53,19 @@ Add a new section to `CHANGELOG.md`:
 ```bash
 # Commit your changes
 git add -A
-git commit -m "chore: bump version to 0.2.0"
+git commit -m "chore: release v0.2.0"
 
 # Create annotated tag (MUST start with 'v')
-git tag -a v0.2.0 -m "Release version 0.2.0 - brief description"
+git tag -a v0.2.0 -m "Release version 0.2.0"
 
 # Push everything
 git push origin main
 git push origin v0.2.0
 ```
 
-### 4. Automatic PyPI Release
+### 4. Monitor Release
 
-The GitHub Action will automatically:
-- Run tests
-- Build the package
-- Upload to PyPI using trusted publishing
-
-Monitor the release at:
+GitHub Actions will automatically publish to PyPI. Monitor at:
 - GitHub Actions: https://github.com/brkrabac/claude-trace-viewer/actions
 - PyPI: https://pypi.org/project/claude-trace-viewer/
 
