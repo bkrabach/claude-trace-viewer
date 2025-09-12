@@ -43,11 +43,11 @@ claude-trace-viewer
 # Specify a different directory
 claude-trace-viewer --trace-dir /path/to/directory/that/contains/.claude-trace
 
-# Use a different port
+# Use a different port, ex: 5000
 claude-trace-viewer --port 5000
 ```
 
-The viewer will automatically open in your default browser at http://localhost:5000
+Click the link printed in the terminal to open the web interface in your browser, defaults to `http://127.0.0.1:8080`.
 
 ## Features
 
