@@ -5,7 +5,7 @@ def test_package_imports():
     """Test that the package can be imported."""
     import trace_viewer
 
-    assert trace_viewer.__version__ == "0.1.0"
+    assert trace_viewer.__version__ == "0.2.0"
 
 
 def test_cli_entry_point():
