@@ -200,10 +200,15 @@ def update_version_in_file(file_path: Path, old_version: str, new_version: str, 
     content = file_path.read_text()
 
     if pattern:
-        # Use custom pattern
+        # Use custom pattern for matching
         old_pattern = pattern.format(version=re.escape(old_version))
-        new_pattern = pattern.format(version=new_version)
-        new_content = re.sub(old_pattern, new_pattern, content)
+
+        # Use a lambda replacer to preserve the exact matched text structure
+        # while only replacing the version number
+        def replacer(match):
+            return match.group(0).replace(old_version, new_version)
+
+        new_content = re.sub(old_pattern, replacer, content, flags=re.MULTILINE)
     else:
         # Simple string replacement
         new_content = content.replace(old_version, new_version)
@@ -372,7 +377,7 @@ def main():
         pyproject_path,
         current_version,
         new_version,
-        pattern=r'^version\s*=\s*"{version}"',
+        pattern='^version\\s*=\\s*"{version}"',
     ):
         print_success("Updated pyproject.toml")
 
@@ -381,7 +386,7 @@ def main():
         init_path,
         current_version,
         new_version,
-        pattern=r'^__version__\s*=\s*"{version}"',
+        pattern='^__version__\\s*=\\s*"{version}"',
     ):
         print_success("Updated trace_viewer/__init__.py")
 
