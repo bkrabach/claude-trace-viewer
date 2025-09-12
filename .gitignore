@@ -39,3 +39,6 @@ htmlcov/
 # Package
 *.whl
 *.tar.gz
+
+# claude-trace logs
+.claude-trace
