@@ -40,8 +40,8 @@ claude-trace-viewer = "trace_viewer.__main__:main"
 ctv = "trace_viewer.__main__:main"
 
 [project.urls]
-Homepage = "https://github.com/brkrabac/claude-trace-viewer"
-Repository = "https://github.com/brkrabac/claude-trace-viewer"
+Homepage = "https://github.com/bkrabach/claude-trace-viewer"
+Repository = "https://github.com/bkrabach/claude-trace-viewer"
 
 [tool.setuptools]
 packages = ["trace_viewer"]
