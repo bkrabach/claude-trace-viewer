@@ -62,7 +62,7 @@ Click the link printed in the terminal to open the web interface in your browser
 
 ```bash
 # Clone the repository
-git clone https://github.com/brkrabac/claude-trace-viewer.git
+git clone https://github.com/bkrabach/claude-trace-viewer.git
 cd claude-trace-viewer
 
 # Install in development mode
