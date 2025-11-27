@@ -44,14 +44,20 @@ help: ## Show this help message
 install: ## Install dependencies and set up development environment
 	@echo "$(BLUE)Setting up development environment...$(NC)"
 	@command -v $(UV) >/dev/null 2>&1 || { echo "$(RED)Error: uv is not installed. Install it with: curl -LsSf https://astral.sh/uv/install.sh | sh$(NC)"; exit 1; }
-	@echo "Creating virtual environment..."
-	@$(UV) venv
+	@if [ -z "$$UV_PROJECT_ENVIRONMENT" ]; then \
+		echo "Creating virtual environment..."; \
+		$(UV) venv; \
+	else \
+		echo "Using environment from UV_PROJECT_ENVIRONMENT: $$UV_PROJECT_ENVIRONMENT"; \
+	fi
 	@echo "Installing package in editable mode with dev dependencies..."
 	@$(UV) pip install -e ".[dev]"
 	@echo "$(GREEN)✓ Development environment ready!$(NC)"
-	@echo ""
-	@echo "$(YELLOW)Activate the virtual environment with:$(NC)"
-	@echo "  source .venv/bin/activate"
+	@if [ -z "$$UV_PROJECT_ENVIRONMENT" ]; then \
+		echo ""; \
+		echo "$(YELLOW)Activate the virtual environment with:$(NC)"; \
+		echo "  source .venv/bin/activate"; \
+	fi
 
 .PHONY: test
 test: ## Run test suite
