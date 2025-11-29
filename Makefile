@@ -10,6 +10,15 @@ UV := uv
 VENV := .venv
 PYTHON_BIN := $(VENV)/bin/python
 
+# Detect environment mode:
+# - ACTIVATED: A venv is already activated (VIRTUAL_ENV set) - run commands directly
+# - LOCAL: Local .venv exists - use uv run
+# - NONE: No venv available
+# This allows the Makefile to work both standalone and as a submodule
+VENV_ACTIVATED := $(shell if [ -n "$$VIRTUAL_ENV" ]; then echo "1"; fi)
+HAS_LOCAL_VENV := $(shell if [ -d "$(VENV)" ]; then echo "1"; fi)
+HAS_VENV := $(shell if [ -n "$$VIRTUAL_ENV" ] || [ -n "$$UV_PROJECT_ENVIRONMENT" ] || [ -d "$(VENV)" ]; then echo "1"; fi)
+
 # Colors for output
 BLUE := \033[0;34m
 GREEN := \033[0;32m
@@ -62,7 +71,9 @@ install: ## Install dependencies and set up development environment
 .PHONY: test
 test: ## Run test suite
 	@echo "$(BLUE)Running tests...$(NC)"
-	@if [ -d "$(VENV)" ]; then \
+	@if [ "$(VENV_ACTIVATED)" = "1" ]; then \
+		pytest tests/ -v; \
+	elif [ "$(HAS_LOCAL_VENV)" = "1" ]; then \
 		$(UV) run pytest tests/ -v; \
 	else \
 		echo "$(RED)Virtual environment not found. Run 'make install' first.$(NC)"; \
@@ -72,7 +83,10 @@ test: ## Run test suite
 .PHONY: format
 format: ## Format code with ruff
 	@echo "$(BLUE)Formatting code...$(NC)"
-	@if [ -d "$(VENV)" ]; then \
+	@if [ "$(VENV_ACTIVATED)" = "1" ]; then \
+		ruff format .; \
+		echo "$(GREEN)✓ Code formatted$(NC)"; \
+	elif [ "$(HAS_LOCAL_VENV)" = "1" ]; then \
 		$(UV) run ruff format .; \
 		echo "$(GREEN)✓ Code formatted$(NC)"; \
 	else \
@@ -83,7 +97,9 @@ format: ## Format code with ruff
 .PHONY: lint
 lint: ## Run linting checks
 	@echo "$(BLUE)Running linting checks...$(NC)"
-	@if [ -d "$(VENV)" ]; then \
+	@if [ "$(VENV_ACTIVATED)" = "1" ]; then \
+		ruff check . || true; \
+	elif [ "$(HAS_LOCAL_VENV)" = "1" ]; then \
 		$(UV) run ruff check . || true; \
 	else \
 		echo "$(RED)Virtual environment not found. Run 'make install' first.$(NC)"; \
@@ -97,7 +113,9 @@ check: test format lint ## Run all checks (test, format, lint)
 .PHONY: run
 run: ## Run the trace viewer locally
 	@echo "$(BLUE)Starting Claude Trace Viewer...$(NC)"
-	@if [ -d "$(VENV)" ]; then \
+	@if [ "$(VENV_ACTIVATED)" = "1" ]; then \
+		claude-trace-viewer; \
+	elif [ "$(HAS_LOCAL_VENV)" = "1" ]; then \
 		$(UV) run claude-trace-viewer; \
 	else \
 		echo "$(RED)Virtual environment not found. Run 'make install' first.$(NC)"; \
@@ -107,7 +125,9 @@ run: ## Run the trace viewer locally
 .PHONY: release
 release: ## Create a new release (interactive)
 	@echo "$(BLUE)Starting release process...$(NC)"
-	@if [ -d "$(VENV)" ]; then \
+	@if [ "$(VENV_ACTIVATED)" = "1" ]; then \
+		python tools/release.py; \
+	elif [ "$(HAS_LOCAL_VENV)" = "1" ]; then \
 		$(UV) run python tools/release.py; \
 	else \
 		echo "$(RED)Virtual environment not found. Run 'make install' first.$(NC)"; \
@@ -117,7 +137,11 @@ release: ## Create a new release (interactive)
 .PHONY: build
 build: ## Build distribution packages
 	@echo "$(BLUE)Building distribution packages...$(NC)"
-	@if [ -d "$(VENV)" ]; then \
+	@if [ "$(VENV_ACTIVATED)" = "1" ]; then \
+		$(UV) pip install --upgrade build; \
+		python -m build; \
+		echo "$(GREEN)✓ Build complete! Packages in dist/$(NC)"; \
+	elif [ "$(HAS_LOCAL_VENV)" = "1" ]; then \
 		$(UV) pip install --upgrade build; \
 		$(UV) run python -m build; \
 		echo "$(GREEN)✓ Build complete! Packages in dist/$(NC)"; \
